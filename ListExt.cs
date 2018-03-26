@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GloomhavenCards
 {
-  public static class ListExt //gleefully copied from Internet somewhere
+  public static class ListExt //gleefully copied from http://www.martijnkooij.nl/2013/04/csharp-math-mean-variance-and-standard-deviation/
   {
     public static double Mean(this List<double> values)
     {
