@@ -11,27 +11,29 @@ namespace GloomhavenCards
   {
     static void Main(string[] args)
     {
-      Console.WriteLine($"For {DRAWS} rolls at +4 atk");
+      Console.WriteLine($"For {DRAWS} rolls at +{ATK} atk");
       DrawStuff(new Deck(MyDeck), "MyDeck");
       DrawStuff(new Deck(Less0), "Less0");
       DrawStuff(new Deck(OnesToTwos), "OnesToTwos");
       DrawStuff(new Deck(Icy), "Icy");
       DrawStuff(new Deck(Muddles), "Muddles");
+      DrawStuff(new Deck(DisarmMuddle), "DisarmMuddle");      
       DrawStuff(new Deck(RollinOnes), "RollinOnes");
 
       Console.WriteLine("Press any key to exit");
       Console.ReadKey(true);
     }
 
-    const int DRAWS = 1111;
+    const int DRAWS = 4130;
+    const int ATK = 4;
 
     private static void DrawStuff(Deck theDeck, string name)
     {
       Console.WriteLine($"{name}:");
 
+      DrawAndReport("  Disadvantage: ", i => theDeck.Disadvantage(i));
       DrawAndReport("  Normal:       ", i => theDeck.Draw(i));
       DrawAndReport("  Advantage:    ", i => theDeck.Advantage(i));
-      DrawAndReport("  Disadvantage: ", i => theDeck.Disadvantage(i));
 
       Console.WriteLine();
     }
@@ -42,10 +44,10 @@ namespace GloomhavenCards
       Console.Write(style);
 
       for (int i = 0; i < DRAWS; i++)
-        res[i] = drawStyle(4);
+        res[i] = drawStyle(ATK);
       var tmp = res.Select(r => (double)r.Value).ToList();
 
-      var stats = res.Where(r => r.Status.Any()).SelectMany(r => r.Status).Distinct();
+      var stats = res.Where(r => r.Status.Any()).SelectMany(r => r.Status).Distinct().OrderBy(s=>s);
 
       Console.WriteLine($"Average: {tmp.Mean():F2}, StdDev: {tmp.StandardDeviation():F2} - " +
         string.Join(", ", stats.Select(stat => $"{stat} - {res.Count(r => r.Status.Contains(stat)) * 100.0 / DRAWS:F2} % ")));
@@ -94,6 +96,17 @@ namespace GloomhavenCards
     static List<Card> Muddles = new List<Card>
       {
         new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true},
+        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
+        new Card { Value=1}, new Card { Value=1},
+
+        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
+        new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
+        new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
+      };
+
+    static List<Card> DisarmMuddle = new List<Card>
+      {
+        new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Disarm", IsRolling=true}, 
         new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
         new Card { Value=1}, new Card { Value=1},
 
