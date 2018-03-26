@@ -21,23 +21,34 @@ namespace GloomhavenCards
 
       Console.WriteLine("Press any key to exit");
       Console.ReadKey(true);
-
-      //TODO: DrawAdvantage, DrawDisadvantage, display statuses
     }
 
-    const int DRAWS = 413;
+    const int DRAWS = 1111;
 
     private static void DrawStuff(Deck theDeck, string name)
     {
       Console.WriteLine($"{name}:");
 
+      DrawAndReport("  Normal:       ", i => theDeck.Draw(i));
+      DrawAndReport("  Advantage:    ", i => theDeck.Advantage(i));
+      DrawAndReport("  Disadvantage: ", i => theDeck.Disadvantage(i));
+
+      Console.WriteLine();
+    }
+
+    private static void DrawAndReport(string style, Func<int, DrawResult> drawStyle)
+    {
       var res = new DrawResult[DRAWS];
+      Console.Write(style);
 
       for (int i = 0; i < DRAWS; i++)
-        res[i] = theDeck.Draw(4);
+        res[i] = drawStyle(4);
       var tmp = res.Select(r => (double)r.Value).ToList();
-      Console.WriteLine($"Average: {tmp.Mean():F2}, StdDev: {tmp.StandardDeviation():F2}");
-      Console.WriteLine();
+
+      var stats = res.Where(r => r.Status.Any()).SelectMany(r => r.Status).Distinct();
+
+      Console.WriteLine($"Average: {tmp.Mean():F2}, StdDev: {tmp.StandardDeviation():F2} - " +
+        string.Join(", ", stats.Select(stat => $"{stat} - {res.Count(r => r.Status.Contains(stat)) * 100.0 / DRAWS:F2} % ")));
     }
 
     static List<Card> MyDeck = new List<Card>
@@ -118,6 +129,17 @@ namespace GloomhavenCards
     public string Status { get; set; }
     public bool IsRolling { get; set; }
     public bool IsMultiply { get; set; }
+
+    public bool IsBetterThan(Card that)
+    {
+      if (this.IsMultiply && that.IsMultiply)
+        return this.Value > that.Value;
+      else if (this.IsMultiply)
+        return this.Value > 0;
+      else
+        return this.Value > that.Value; //if gloomhaven doesn't recognize that stun is better than +1, we don't have to either.
+    }
+
   }
 
   public class Deck
@@ -170,7 +192,75 @@ namespace GloomhavenCards
 
       return result;
     }
-    
+
+    public DrawResult Advantage(int atk)
+    {
+      var card1 = Cards[_CurrentIndex++];
+      var card2 = Cards[_CurrentIndex++];
+      var result = new DrawResult { Value = atk };
+
+      if (!card1.IsRolling && !card2.IsRolling)
+      {
+        result.ApplyCard(card1.IsBetterThan(card2) ? card1 : card2);
+      }
+      else if (card1.IsRolling && !card2.IsRolling)
+      {
+        result.ApplyCard(card1);
+        result.ApplyCard(card2);
+      }
+      else if (!card1.IsRolling && card2.IsRolling)
+      {
+        result.ApplyCard(card2);
+        result.ApplyCard(card1);
+      }
+      else //2 rollings
+      {
+        result = Draw(atk); //takes into account further rolling
+        result.ApplyCard(card1);
+        result.ApplyCard(card2);
+      }
+
+      if (card1.IsMultiply || card2.IsMultiply)
+        Shuffle();
+
+      return result;
+    }
+
+    public DrawResult Disadvantage(int atk)
+    {
+      var card1 = Cards[_CurrentIndex++];
+      var card2 = Cards[_CurrentIndex++];
+      var result = new DrawResult { Value = atk };
+      var sawMultiply = card1.IsMultiply || card2.IsMultiply;
+
+      if (!card1.IsRolling && !card2.IsRolling)
+      {
+        result.ApplyCard(card1.IsBetterThan(card2) ? card2 : card1);
+      }
+      else if (card1.IsRolling && !card2.IsRolling)
+      {
+        result.ApplyCard(card2);
+      }
+      else if (!card1.IsRolling && card2.IsRolling)
+      {
+        result.ApplyCard(card1);
+      }
+      else //2 rollings
+      {
+        do
+        {
+          card1 = Cards[_CurrentIndex++];
+          sawMultiply = sawMultiply || card1.IsMultiply;
+        } while (card1.IsRolling);
+        result.ApplyCard(card1);
+      }
+
+      if (sawMultiply)
+        Shuffle();
+
+      return result;
+    }
+
     public List<Card> Cards { get; }
   }
 
