@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace GloomhavenCards
@@ -31,9 +29,9 @@ namespace GloomhavenCards
     {
       Console.WriteLine($"{name}:");
 
-      DrawAndReport("  Disadvantage: ", i => theDeck.Disadvantage(i));
-      DrawAndReport("  Normal:       ", i => theDeck.Draw(i));
-      DrawAndReport("  Advantage:    ", i => theDeck.Advantage(i));
+      DrawAndReport("  Disadvantage: ", theDeck.Disadvantage);
+      DrawAndReport("  Normal:       ", theDeck.Draw);
+      DrawAndReport("  Advantage:    ", theDeck.Advantage);
 
       Console.WriteLine();
     }
@@ -53,7 +51,7 @@ namespace GloomhavenCards
         string.Join(", ", stats.Select(stat => $"{stat} - {res.Count(r => r.Status.Contains(stat)) * 100.0 / DRAWS:F2} % ")));
     }
 
-    static List<Card> MyDeck = new List<Card>
+    static readonly List<Card> MyDeck = new List<Card>
       {
         new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
         new Card { Value=1}, new Card { Value=1},
@@ -63,7 +61,7 @@ namespace GloomhavenCards
         new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
       };
 
-    static List<Card> Less0 = new List<Card>
+    static readonly List<Card> Less0 = new List<Card>
       {
         new Card { Value=1}, new Card { Value=1},
 
@@ -72,7 +70,7 @@ namespace GloomhavenCards
         new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
       };
 
-    static List<Card> OnesToTwos = new List<Card>
+    static readonly List<Card> OnesToTwos = new List<Card>
       {
         new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
         new Card { Value=2}, new Card { Value=2},
@@ -82,7 +80,7 @@ namespace GloomhavenCards
         new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
       };
 
-    static List<Card> Icy = new List<Card>
+    static readonly List<Card> Icy = new List<Card>
       {
         new Card { Value=2, Status="Ice"},
         new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
@@ -93,7 +91,7 @@ namespace GloomhavenCards
         new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
       };
 
-    static List<Card> Muddles = new List<Card>
+    static readonly List<Card> Muddles = new List<Card>
       {
         new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true},
         new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
@@ -104,7 +102,7 @@ namespace GloomhavenCards
         new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
       };
 
-    static List<Card> DisarmMuddle = new List<Card>
+    static readonly List<Card> DisarmMuddle = new List<Card>
       {
         new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Disarm", IsRolling=true}, 
         new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
@@ -115,7 +113,7 @@ namespace GloomhavenCards
         new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
       };
 
-    static List<Card> RollinOnes = new List<Card>
+    static readonly List<Card> RollinOnes = new List<Card>
       {
         new Card { Value=1, IsRolling=true}, new Card { Value=1, IsRolling=true},
         new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
@@ -147,10 +145,9 @@ namespace GloomhavenCards
     {
       if (this.IsMultiply && that.IsMultiply)
         return this.Value > that.Value;
-      else if (this.IsMultiply)
+      if (this.IsMultiply)
         return this.Value > 0;
-      else
-        return this.Value > that.Value; //if gloomhaven doesn't recognize that stun is better than +1, we don't have to either.
+      return this.Value > that.Value; //if gloomhaven doesn't recognize that stun is better than +1, we don't have to either.
     }
 
   }
@@ -163,7 +160,7 @@ namespace GloomhavenCards
       Shuffle();
     }
 
-    private Random _R = new Random();
+    private readonly Random _R = new Random();
     private int _CurrentIndex;
     private void Shuffle()
     {
@@ -192,8 +189,8 @@ namespace GloomhavenCards
 
       //rolling
       var rolling = drawn.Where(c => c.IsRolling).ToArray();
-      if (rolling.Count() + 1 != drawn.Count)
-        throw new Exception($"rolling.Count() + 1 = {rolling.Count()} drawn.Count = {drawn.Count}!"); //shouldn't happen unless I screwed up
+      if (rolling.Length + 1 != drawn.Count)
+        throw new Exception($"rolling.Count() + 1 = {rolling.Length} drawn.Count = {drawn.Count}!"); //shouldn't happen unless I screwed up
       foreach (var card in rolling)
         result.ApplyCard(card);
 
