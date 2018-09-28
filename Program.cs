@@ -15,6 +15,7 @@ namespace GloomhavenCards
       DrawStuff(new Deck(Minuses), "Minuses");
       DrawStuff(new Deck(ZeroToOne), "ZeroToOne");
       DrawStuff(new Deck(RollinOnes), "RollinOnes");
+      DrawStuff(new Deck(AddTarget), "AddTarget");
       
 
       Console.WriteLine("Press any key to exit");
@@ -57,7 +58,7 @@ namespace GloomhavenCards
       new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
       new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
       new Card {Value = -2},new Card {Value = 2},
-      new Card {Value = 2, IsMultiply = true},new Card {Value = 2, IsMultiply = true}
+      new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
     };
     static readonly List<Card> Minuses = new List<Card>
       {
@@ -65,7 +66,7 @@ namespace GloomhavenCards
         new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
         new Card {Value = -1},
         new Card {Value = -2},new Card {Value = 2},
-        new Card {Value = 2, IsMultiply = true},new Card {Value = 2, IsMultiply = true}
+        new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
       };
 
     static readonly List<Card> ZeroToOne = new List<Card>
@@ -75,7 +76,7 @@ namespace GloomhavenCards
         new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
         new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
         new Card {Value = -2},new Card {Value = 2},
-        new Card {Value = 2, IsMultiply = true},new Card {Value = 2, IsMultiply = true}
+        new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
       };
 
     static readonly List<Card> RollinOnes = new List<Card>
@@ -85,8 +86,18 @@ namespace GloomhavenCards
         new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
         new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
         new Card {Value = -2},new Card {Value = 2},
-        new Card {Value = 2, IsMultiply = true},new Card {Value = 2, IsMultiply = true}
+        new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
       };
+    private static readonly List<Card> AddTarget = new List<Card>
+    {
+      new Card {Value = ATK, IsRolling=true}, new Card {Value = ATK, IsRolling=true},
+      new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
+      new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+      new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
+      new Card {Value = -2},new Card {Value = 2},
+      new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
+    };
+
 
   }
 
@@ -97,12 +108,14 @@ namespace GloomhavenCards
       Value = 0;
       Status = "";
       IsRolling = false;
+      IsShuffle = false;
       IsMultiply = false;
     }
     public int Value { get; set; }
     public string Status { get; set; }
     public bool IsRolling { get; set; }
     public bool IsMultiply { get; set; }
+    public bool IsShuffle { get; set; }
 
     public bool IsBetterThan(Card that)
     {
@@ -160,7 +173,7 @@ namespace GloomhavenCards
       result.ApplyCard(drawn.First(c => !c.IsRolling)); //should be exactly one.
 
       //we'll never actually get to the end since we have both *0 & *2
-      if (drawn.Any(c => c.IsMultiply))
+      if (drawn.Any(c => c.IsShuffle))
         Shuffle(); //strictly, we wouldn't do this til the round end, but how often to I hit multiple targets anyway.
 
       return result;
@@ -193,7 +206,7 @@ namespace GloomhavenCards
         result.ApplyCard(card2);
       }
 
-      if (card1.IsMultiply || card2.IsMultiply)
+      if (card1.IsShuffle || card2.IsShuffle)
         Shuffle();
 
       return result;
