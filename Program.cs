@@ -12,20 +12,9 @@ namespace GloomhavenCards
       Console.WriteLine($"For {DRAWS} rolls at +{ATK} atk");
       DrawStuff(new Deck(BaseDeck), "BaseDeck");
       Console.WriteLine("- Choices! ----------");
-      DrawStuff(new Deck(MyDeck), "MyDeck");
-      DrawStuff(new Deck(Less0), "Less0");
-      DrawStuff(new Deck(OnesToTwos), "OnesToTwos");
-      DrawStuff(new Deck(Icy), "Icy");
-      DrawStuff(new Deck(Muddles), "Muddles");
-      DrawStuff(new Deck(DisarmMuddle), "DisarmMuddle");
-      DrawStuff(new Deck(Stun), "Stun");
+      DrawStuff(new Deck(Minuses), "Minuses");
+      DrawStuff(new Deck(ZeroToOne), "ZeroToOne");
       DrawStuff(new Deck(RollinOnes), "RollinOnes");
-
-      Console.WriteLine("- The future ----------");
-      DrawStuff(new Deck(Less0AndMuddle), "Less0AndMuddle");
-      DrawStuff(new Deck(Less0Icy), "Less0Icy");
-      DrawStuff(new Deck(Less0Rollin), "Less0Rollin");
-      DrawStuff(new Deck(StatusJamboree), "StatusJamboree");
       
 
       Console.WriteLine("Press any key to exit");
@@ -61,7 +50,7 @@ namespace GloomhavenCards
         string.Join(", ", stats.Select(stat => $"{stat} - {res.Count(r => r.Status.Contains(stat)) * 100.0 / DRAWS:F2} % ")));
     }
 
-
+    //https://imgur.com/a/w8tTT
     private static readonly List<Card> BaseDeck = new List<Card>
     {
       new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
@@ -70,131 +59,34 @@ namespace GloomhavenCards
       new Card {Value = -2},new Card {Value = 2},
       new Card {Value = 2, IsMultiply = true},new Card {Value = 2, IsMultiply = true}
     };
-    static readonly List<Card> MyDeck = new List<Card>
+    static readonly List<Card> Minuses = new List<Card>
       {
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
-        new Card { Value=1}, new Card { Value=1},
-
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-        new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-        new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
+        new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
+        new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+        new Card {Value = -1},
+        new Card {Value = -2},new Card {Value = 2},
+        new Card {Value = 2, IsMultiply = true},new Card {Value = 2, IsMultiply = true}
       };
 
-    static readonly List<Card> Less0 = new List<Card>
+    static readonly List<Card> ZeroToOne = new List<Card>
       {
-        new Card { Value=1}, new Card { Value=1},
-
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-        new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-        new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-      };
-
-    static readonly List<Card> OnesToTwos = new List<Card>
-      {
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
-        new Card { Value=2}, new Card { Value=2},
-
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-        new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-        new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-      };
-
-    static readonly List<Card> Icy = new List<Card>
-      {
-        new Card { Value=2, Status="Ice"},
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
-        new Card { Value=1}, new Card { Value=1},
-
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-        new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-        new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-      };
-
-    static readonly List<Card> Muddles = new List<Card>
-    {
-      new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true},
-      new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
-      new Card { Value=1}, new Card { Value=1},
-
-      new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-      new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-      new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-    };
-
-    static readonly List<Card> Stun = new List<Card>
-    {
-      new Card { Value=0, Status="Stun", IsRolling=true},
-      new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
-      new Card { Value=1}, new Card { Value=1},
-
-      new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-      new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-      new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-    };
-
-    static readonly List<Card> DisarmMuddle = new List<Card>
-      {
-        new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Disarm", IsRolling=true}, 
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
-        new Card { Value=1}, new Card { Value=1},
-
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-        new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-        new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
+        new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+        new Card {Value = 0},new Card {Value = 0},
+        new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+        new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
+        new Card {Value = -2},new Card {Value = 2},
+        new Card {Value = 2, IsMultiply = true},new Card {Value = 2, IsMultiply = true}
       };
 
     static readonly List<Card> RollinOnes = new List<Card>
       {
         new Card { Value=1, IsRolling=true}, new Card { Value=1, IsRolling=true},
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=0} ,
-        new Card { Value=1}, new Card { Value=1},
-
-        new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-        new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-        new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
+        new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
+        new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+        new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
+        new Card {Value = -2},new Card {Value = 2},
+        new Card {Value = 2, IsMultiply = true},new Card {Value = 2, IsMultiply = true}
       };
-
-    static readonly List<Card> Less0AndMuddle = new List<Card>
-    {
-      new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true},
-      new Card { Value=1}, new Card { Value=1},
-
-      new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-      new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-      new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-    };
-    static readonly List<Card> Less0Icy = new List<Card>
-    {
-      new Card { Value=2, Status="Ice"},
-      new Card { Value=1}, new Card { Value=1},
-
-      new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-      new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-      new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-    };
-    
-    static readonly List<Card> Less0Rollin = new List<Card>
-    {
-      new Card { Value=1, IsRolling=true}, new Card { Value=1, IsRolling=true},
-      new Card { Value=1}, new Card { Value=1},
-
-      new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-      new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-      new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-    };
-
-    static readonly List<Card> StatusJamboree = new List<Card>
-    {
-      new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Muddle", IsRolling=true},
-      new Card { Value=0, Status="Muddle", IsRolling=true}, new Card { Value=0, Status="Disarm", IsRolling=true},
-      new Card { Value=0, Status="Stun", IsRolling=true},
-      new Card { Value=0, Status="Immobilize", IsRolling=true}, new Card { Value=0, Status="Immobilize", IsRolling=true},
-      new Card { Value=1}, new Card { Value=1},
-
-      new Card { Value=0}, new Card { Value=0}, new Card { Value=0}, new Card { Value=-1}, new Card { Value=2},
-      new Card { Value=1}, new Card { Value=1}, new Card { Value=1},
-      new Card { Value=2, IsMultiply=true}, new Card { Value=2, IsMultiply=true}
-    };
 
   }
 
