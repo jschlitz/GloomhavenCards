@@ -16,14 +16,20 @@ namespace GloomhavenCards
       DrawStuff(new Deck(ZeroToOne), "ZeroToOne");
       DrawStuff(new Deck(RollinOnes), "RollinOnes");
       DrawStuff(new Deck(AddTarget), "AddTarget");
-      
+      DrawStuff(new Deck(Muddle), "Muddle");
+      DrawStuff(new Deck(Stun), "Stun");
+      Console.WriteLine("- More Choices! ----------");
+      DrawStuff(new Deck(AddTarget0to1), "AddTarget0to1");
+      DrawStuff(new Deck(AddTargetMinuses), "AddTargetMinuses");
+      DrawStuff(new Deck(AddTargetRollin), "AddTargetRollin");
+
 
       Console.WriteLine("Press any key to exit");
       Console.ReadKey(true);
     }
 
     const int DRAWS = 4130;
-    const int ATK = 4;
+    const int ATK = 5;
 
     private static void DrawStuff(Deck theDeck, string name)
     {
@@ -68,6 +74,16 @@ namespace GloomhavenCards
         new Card {Value = -2},new Card {Value = 2},
         new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
       };
+    private static readonly List<Card> AddTargetMinuses = new List<Card>
+    {
+      new Card {Value = ATK-2, IsRolling=true}, new Card {Value = ATK-2, IsRolling=true},
+      new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
+      new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+      new Card {Value = -1},
+      new Card {Value = -2},new Card {Value = 2},
+      new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
+    };
+
 
     static readonly List<Card> ZeroToOne = new List<Card>
       {
@@ -78,6 +94,16 @@ namespace GloomhavenCards
         new Card {Value = -2},new Card {Value = 2},
         new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
       };
+    private static readonly List<Card> AddTarget0to1 = new List<Card>
+    {
+      new Card {Value = ATK-2, IsRolling=true}, new Card {Value = ATK-2, IsRolling=true},
+      new Card {Value = 0},new Card {Value = 0},
+      new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+      new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+      new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
+      new Card {Value = -2},new Card {Value = 2},
+      new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
+    };
 
     static readonly List<Card> RollinOnes = new List<Card>
       {
@@ -88,9 +114,38 @@ namespace GloomhavenCards
         new Card {Value = -2},new Card {Value = 2},
         new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
       };
+    private static readonly List<Card> AddTargetRollin = new List<Card>
+    {
+      new Card { Value=1, IsRolling=true}, new Card { Value=1, IsRolling=true},
+      new Card {Value = ATK-2, IsRolling=true}, new Card {Value = ATK-2, IsRolling=true},
+      new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
+      new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+      new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
+      new Card {Value = -2},new Card {Value = 2},
+      new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
+    };
+
     private static readonly List<Card> AddTarget = new List<Card>
     {
-      new Card {Value = ATK, IsRolling=true}, new Card {Value = ATK, IsRolling=true},
+      new Card {Value = ATK-2, IsRolling=true}, new Card {Value = ATK-2, IsRolling=true},
+      new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
+      new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+      new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
+      new Card {Value = -2},new Card {Value = 2},
+      new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
+    };
+    private static readonly List<Card> Muddle = new List<Card>
+    {
+      new Card {Value = 2, Status="Muddle"},
+      new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
+      new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
+      new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
+      new Card {Value = -2},new Card {Value = 2},
+      new Card {Value = 2, IsMultiply = true, IsShuffle=true},new Card {Value = 2, IsMultiply = true, IsShuffle=true}
+    };
+    private static readonly List<Card> Stun = new List<Card>
+    {
+      new Card {Value = 0, Status="Stun"},
       new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},new Card {Value = 0},
       new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},new Card {Value = 1},
       new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},new Card {Value = -1},
